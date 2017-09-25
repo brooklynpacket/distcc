@@ -27,11 +27,6 @@ setup()
 	tinyco/distccd.sh
 }
 
-setup_project()
-{
-
-}
-
 usage()
 {
 	echo "Options:\n\n"
