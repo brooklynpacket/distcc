@@ -5,6 +5,7 @@ set -e
 setup()
 {
 	brew install python
+	brew link python
 	brew install autoconf
 	brew install automake
 	brew install distcc
