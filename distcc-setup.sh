@@ -4,6 +4,7 @@ set -e
 
 setup()
 {
+	brew install python
 	brew install autoconf
 	brew install automake
 	brew install distcc
@@ -24,6 +25,11 @@ setup()
 	/usr/local/Cellar/distcc/3.2rc1/bin/distcc
 
 	tinyco/distccd.sh
+}
+
+setup_project()
+{
+
 }
 
 usage()
