@@ -21,6 +21,8 @@ setup()
 	sudo chown root:wheel /Library/LaunchDaemons/org.distccd.user.plist
 	sudo chmod 644 /Library/LaunchDaemons/org.distccd.user.plist
 
+	/usr/local/Cellar/distcc/3.2rc1/bin/distcc
+
 	tinyco/distccd.sh
 }
 
