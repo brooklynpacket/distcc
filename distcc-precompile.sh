@@ -6,7 +6,9 @@ cd ~/Documents/tinyco/distcc
 git fetch origin
 git merge origin/master
 
-ping 10.1.3.255 -W 2000
+ping 10.1.3.255 -c 3 > /dev/null
+wait $!
+
 echo "127.0.0.1" > "hosts.temp"
 
 while read line || [[ -n "$line" ]]
