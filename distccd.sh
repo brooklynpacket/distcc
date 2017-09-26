@@ -1,5 +1,13 @@
 #!/bin/sh
 
+commit_hosts()
+{
+	sudo git reset
+	sudo git add hosts
+	sudo git commit -m "$COMMIT_MSG"
+	sudo git push origin master
+}
+
 set -e
 
 cd /usr/local/tinyco/distcc/tinyco
@@ -14,22 +22,21 @@ REQUIRED_VERSION=$(cat cli-version | grep version:)
 if [ "$CL_VERSION" != "$REQUIRED_VERSION" ]
 then
 	echo "Local command line tools $CL_VERSION does not match required $REQUIRED_VERSION"
+	echo "Removing network name from hosts file"
+	cat hosts | grep -v "$HOSTNAME" | sudo tee hosts
+	COMMIT_MSG="distccd.sh removed network name from host file"
+	commit_hosts
 	exit 1
 fi
 
-MAC_ADDRESS=$(ifconfig en0 | grep ether | sed 's/.*ether \(.*\)/\1/' | sed 's/0\([0-9A-Fa-f]\)/\1/g' | tr '[:upper:]' '[:lower:]')
-echo "MAC Address: $MAC_ADDRESS"
+HOSTS_ID=$(cat hosts | grep "$HOSTNAME") || true
 
-HOSTS_MAC=$(cat ./hosts | grep $MAC_ADDRESS)
-echo "Hosts MAC: $HOSTS_MAC"
-
-if [ "$HOSTS_MAC" == "" ]
+if [ "$HOSTS_ID" == "" ]
 then
-	echo "Adding address to hosts file"
-	echo "\n$MAC_ADDRESS" >> ./hosts
-	sudo git add hosts
-	sudo git commit -m "distccd.sh added MAC address to host file"
-	sudo git push origin master
+	echo "Adding name to hosts file"
+	echo "$HOSTNAME.\n" | sudo tee -a hosts
+	COMMIT_MSG="distccd.sh added network name to host file"
+	commit_hosts
 fi
 
-/usr/local/bin/distccd --no-detach --daemon --allow 127.0.0.1 --log-stderr --verbose
+/usr/local/bin/distccd --no-detach --daemon --allow 127.0.0.1 --allow 10.1.0.0/16 --log-stderr --verbose

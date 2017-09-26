@@ -27,6 +27,17 @@ setup()
 	tinyco/distccd.sh
 }
 
+setup_project()
+{
+	if [ ! -d "~/Documents/tinyco/distcc" ]
+	then
+		git clone https://github.com/brooklynpacket/distcc ~/Documents/tinyco/distcc
+	fi
+
+	sudo touch ~/.distcc/hosts
+	sudo chmod 666 ~/.distcc/hosts
+}
+
 usage()
 {
 	echo "Options:\n\n"
@@ -40,6 +51,11 @@ while [ "$1" != "" ]
 do
 	case $1 in
 		-i )	setup
+				exit
+				;;
+		-p )	project_path=$1
+				setup_project
+				exit
 				;;
 		-h )	usage
 				exit
