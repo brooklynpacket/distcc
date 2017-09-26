@@ -13,7 +13,7 @@ echo "CLI Version: $CL_VERSION"
 REQUIRED_VERSION=$(cat cli-version | grep version:)
 if [ "$CL_VERSION" != "$REQUIRED_VERSION" ]
 then
-	echo "Local command line tools $CL_VERSION does not match reßquired $REQUIRED_VERSION"
+	echo "Local command line tools $CL_VERSION does not match required $REQUIRED_VERSION"
 	exit 1
 fi
 

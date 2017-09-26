@@ -4,8 +4,7 @@ set -e
 
 setup()
 {
-	brew install python
-	brew link python
+	brew install python3
 	brew install autoconf
 	brew install automake
 	brew install distcc
@@ -23,7 +22,7 @@ setup()
 	sudo chown root:wheel /Library/LaunchDaemons/org.distccd.user.plist
 	sudo chmod 644 /Library/LaunchDaemons/org.distccd.user.plist
 
-	/usr/local/Cellar/distcc/3.2rc1/bin/distcc
+	/usr/local/Cellar/distcc/3.2rc1/bin/distcc || true
 
 	tinyco/distccd.sh
 }
