@@ -24,6 +24,9 @@ setup()
 
 	/usr/local/Cellar/distcc/3.2rc1/bin/distcc || true
 
+	mkdir tinyco/logs
+	touch tinyco/logs/distccd.log
+
 	tinyco/distccd.sh
 
 	sudo touch ~/.distcc/hosts

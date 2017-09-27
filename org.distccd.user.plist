@@ -5,7 +5,7 @@
 	<key>Label</key>
 	<string>org.distccd.user</string>
 	<key>LimitLoadToSessionType</key>
-	<string>System</string>
+	<string>Aqua</string>
 	<key>ProgramArguments</key>
 	<array>
 		<string>/usr/local/tinyco/distcc/tinyco/distccd.sh</string>

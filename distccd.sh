@@ -10,8 +10,8 @@ commit_hosts()
 
 set -e
 
-IP_ADDRESS_16=$(ifconfig en6 | grep inet | sed 's/.*inet \([0-9]+\.[0-9]+\)/\1/')
-if [ "$IP_ADDRESS_16" != "10.0" ]
+IP_ADDRESS_VALID_PREFIX=$(ifconfig en6 | grep inet | sed 's/.*inet \(10\.0\.\)/\1/') || true
+if [ "$IP_ADDRESS_VALID_PREFIX" == "" ]
 then
 	echo "Must be on wired network to run server"
 	exit 1
@@ -50,4 +50,4 @@ then
 	commit_hosts
 fi
 
-/usr/local/bin/distccd --no-detach --daemon --allow 127.0.0.1 --allow 10.0.0.0/16 --log-stderr --verbose
+/usr/local/bin/distccd --daemon --allow 127.0.0.1 --allow 10.0.0.0/16 --log-file ~/distcc/tinyco/logs/distccd.log --verbose

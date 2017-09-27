@@ -1,0 +1,21 @@
+Server setup:
+
+1. Make sure you are on a wired connection, with IP address starting with 10.0.
+2. Close Xcode
+3. Make sure you have the correct version of Xcode installed
+4. Run "pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version:"
+	- If you do not have that package, run xcode-select --install
+	- If the version you get from pkgutil is lower than the necessary version (see cli-version), run softwareupdate to update to the correct version of CLI
+5. Run "distcc-setup.sh -i"
+	- If Homebrew needs to install anything, you may have to run the script twice
+	- This will clone the repos, install distcc, and start a server
+6. Run "ps -A | grep distccd"
+	- If you see a number of distccd processes running, you have successfully installed and started a server
+
+
+
+Project setup:
+
+1. In Build Settings, add a custom build setting with key "CPLUSPLUS" and value "~/distcc/tinyco/distcc-compile.sh"
+2. In Build Phases, add a Run Script that calls ~/distcc/tinyco/distcc-precompile.sh, and drag the script to the top of the list (before Compile Sources)
+3. Still in Build Phases, under the existing Run Script at the bottom of the list, add a call to ~/distcc/tinyco/distcc-postcompile.sh
