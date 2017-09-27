@@ -10,7 +10,8 @@ commit_hosts()
 
 set -e
 
-IP_ADDRESS_VALID_PREFIX=$(ifconfig en6 | grep inet | sed 's/.*inet \(10\.0\.\)/\1/') || true
+IFCONFIG=$(ifconfig | grep "inet \|ether " | sed 's/.*inet \(10\.0\.\).*/\1/') || true
+IP_ADDRESS_VALID_PREFIX=$(echo "$IFCONFIG" | grep -v inet) || true
 if [ "$IP_ADDRESS_VALID_PREFIX" == "" ]
 then
 	echo "Must be on wired network to run server"
@@ -25,7 +26,7 @@ git merge origin/master
 CL_VERSION=$(pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version:)
 echo "CLI Version: $CL_VERSION"
 
-MAC_ADDRESS=$(ifconfig en6 | grep ether | sed 's/.*ether \(.*\)/\1/' | sed 's/0\([0-9A-Fa-f]\)/\1/g' | tr '[:upper:]' '[:lower:]')
+MAC_ADDRESS=$(echo $IFCONFIG | sed 's/.*ether \(.*\)\s*10\.0\..*/\1/' | sed 's/0\([0-9A-Fa-f]\)/\1/g' | tr '[:upper:]' '[:lower:]')
 echo "MAC Address: $MAC_ADDRESS"
 
 REQUIRED_VERSION=$(cat cli-version | grep version:)
