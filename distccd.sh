@@ -50,4 +50,4 @@ then
 	commit_hosts
 fi
 
-/usr/local/bin/distccd --daemon --allow 127.0.0.1 --allow 10.0.0.0/16 --log-file ~/distcc/tinyco/logs/distccd.log --verbose
+/usr/local/Cellar/distcc/3.2rc1/bin/distccd --daemon --allow 127.0.0.1 --allow 10.0.0.0/16 --log-file ~/distcc/tinyco/logs/distccd.log --verbose
