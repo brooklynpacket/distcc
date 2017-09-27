@@ -2,11 +2,11 @@
 
 set -e
 
-cd ~/Documents/tinyco/distcc
+cd ~/Documents/distcc/tinyco
 git fetch origin
 git merge origin/master
 
-ping 10.1.3.255 -c 3 > /dev/null
+ping 10.0.3.255 -c 3 > /dev/null
 wait $!
 
 echo "127.0.0.1" > "hosts.temp"
