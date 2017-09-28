@@ -31,6 +31,9 @@ setup()
 
 	sudo touch ~/.distcc/hosts
 	sudo chmod 666 ~/.distcc/hosts
+
+	echo "export DISTCC_ENABLED=true" >> ~/.bash_profile
+	echo "export DISTCC_CURRENT_BUILD_ENABLED=true" >> ~/.bash_profile
 }
 
 usage()

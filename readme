@@ -16,6 +16,12 @@ Server setup:
 
 Project setup:
 
-1. In Build Settings, add a custom build setting with key "CPLUSPLUS" and value "~/distcc/tinyco/distcc-compile.sh"
-2. In Build Phases, add a Run Script that calls ~/distcc/tinyco/distcc-precompile.sh, and drag the script to the top of the list (before Compile Sources)
-3. Still in Build Phases, under the existing Run Script at the bottom of the list, add a call to ~/distcc/tinyco/distcc-postcompile.sh
+1. In Xcode, go to Product > Scheme > Edit Scheme...
+2. Under Build > Pre-actions, add a new action which calls "~/distcc/tinyco/distcc-precompile.sh > ~/distcc/tinyco/logs/precompile.log"
+3. In every target that has a significant number of C++ files (this may be many targets), add a user-defined build setting with key "CPLUSPLUS" and value "~/distcc/tinyco/distcc-compile.sh"
+4. Run a build and look at ~/distcc/tinyc/logs/compile.log to make sure it says "Using distcc"
+5. Close Xcode
+6. In the terminal, run "defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 96"
+7. Start Xcode and compile
+
+WARNING: The maximum compile tasks setting affects how many cores Xcode expects to use, and is only read when Xcode starts up. If you set it higher than the number of cores on your machine when not using distcc, your computer will lock up. If you stop using distcc, be sure to quit Xcode and call "defaults delete com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks"

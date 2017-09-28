@@ -2,14 +2,45 @@
 
 set -e
 
-cd ~/Documents/distcc/tinyco
+cat ~/.bash_profile > ~/distcc/tinyco/profile-copy
+chmod +x ~/distcc/tinyco/profile-copy
+. ~/distcc/tinyco/profile-copy
+
+if [ "$DISTCC_ENABLED" != true ]
+then
+	echo "distcc not enabled"
+	exit
+fi
+
+cd ~/distcc/tinyco
 git fetch origin
 git merge origin/master
+
+REQUIRED_VERSION=$(cat cli-version | grep Xcode)
+CURRENT_VERSION=$(xcodebuild -version | grep Xcode)
+
+cp ~/.bash_profile ~/.bash_profile.bak
+
+if [ "$REQUIRED_VERSION" != "$CURRENT_VERSION" ]
+then
+	cat profile-copy | sed 's/DISTCC_CURRENT_BUILD_ENABLED=.*/DISTCC_CURRENT_BUILD_ENABLED=false/' | tee profile-copy > /dev/null
+	echo "Current version $CURRENT_VERSION is not the required version $REQUIRED_VERSION"
+	exit
+else
+	cat profile-copy | sed 's/DISTCC_CURRENT_BUILD_ENABLED=.*/DISTCC_CURRENT_BUILD_ENABLED=true/' | tee profile-copy > /dev/null
+fi
+
+DISTCCD_PROCESSES=$(ps -A | grep "/usr/local/Cellar/distcc/3.2rc1/bin/distccd" | grep -v "grep") || true
+
+if [ "$DISTCCD_PROCESSES" == "" ]
+then
+	./distccd.sh
+fi
 
 ping 10.0.3.255 -c 3 > /dev/null
 wait $!
 
-echo "127.0.0.1" > "hosts.temp"
+echo "" > "hosts.temp"
 
 while read line || [[ -n "$line" ]]
 do
