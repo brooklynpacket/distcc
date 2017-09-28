@@ -12,7 +12,8 @@ set -e
 
 IFCONFIG=$(ifconfig | grep "inet \|ether " | sed 's/.*inet \(10\.0\.\).*/\1/') || true
 IP_ADDRESS_VALID_PREFIX=$(echo "$IFCONFIG" | grep -v inet) || true
-if [ "$IP_ADDRESS_VALID_PREFIX" == "" ]
+IP_ADDRESS=$(echo "$IFCONFIG" | grep "^10\.0\.") || true
+if [ "$IP_ADDRESS_VALID_PREFIX" == "" ] || [ "$IP_ADDRESS" == "" ]
 then
 	echo "Must be on wired network to run server"
 	exit 1
@@ -50,5 +51,8 @@ then
 	COMMIT_MSG="distccd.sh added MAC address to host file"
 	commit_hosts
 fi
+
+#export DISTCC_SAVE_TEMPS=1
+#export TMPDIR=~/distcc/tinyco/logs/tmp
 
 /usr/local/Cellar/distcc/3.2rc1/bin/distccd --daemon --allow 127.0.0.1 --allow 10.0.0.0/16 --log-file ~/distcc/tinyco/logs/distccd.log --verbose

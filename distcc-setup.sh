@@ -29,6 +29,12 @@ setup()
 
 	tinyco/distccd.sh
 
+	sudo mkdir -m 777 /Library/Developer/Xcode || true
+	sudo mkdir -m 777 /Library/Developer/Xcode/DerivedData || true
+	sudo mkdir -m 777 /Library/Developer/Xcode/DerivedData/ModuleCache || true
+	touch /Library/Developer/Xcode/DerivedData/ModuleCache/Session.modulevalidation
+	sudo chmod 666 /Library/Developer/Xcode/DerivedData/ModuleCache/Session.modulevalidation
+
 	sudo touch ~/.distcc/hosts
 	sudo chmod 666 ~/.distcc/hosts
 
