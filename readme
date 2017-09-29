@@ -18,10 +18,12 @@ Project setup:
 
 1. In Xcode, go to Product > Scheme > Edit Scheme...
 2. Under Build > Pre-actions, add a new action which calls "~/distcc/tinyco/distcc-precompile.sh > ~/distcc/tinyco/logs/precompile.log"
-3. In every target that has a significant number of C++ files (this may be many targets), add a user-defined build setting with key "CPLUSPLUS" and value "~/distcc/tinyco/distcc-compile.sh"
-4. Run a build and look at ~/distcc/tinyc/logs/compile.log to make sure it says "Using distcc"
-5. Close Xcode
-6. In the terminal, run "defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 96"
-7. Start Xcode and compile
+3. Go to Xcode > Preferences...
+4. Under Locations, change Derived Data to a Custom location with address '/Library/Developer/Xcode/DerivedData'
+5. In every target that has a significant number of C++ files (this may be many targets), add a user-defined build setting with key "CPLUSPLUS" and value "~/distcc/tinyco/distcc-compile.sh"
+6. Run a build and look at ~/distcc/tinyc/logs/compile.log to make sure it says "Using distcc"
+7. Close Xcode
+8. In the terminal, run "defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 24"
+9. Start Xcode and compile
 
-WARNING: The maximum compile tasks setting affects how many cores Xcode expects to use, and is only read when Xcode starts up. If you set it higher than the number of cores on your machine when not using distcc, your computer will lock up. If you stop using distcc, be sure to quit Xcode and call "defaults delete com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks"
+WARNING: The maximum compile tasks setting affects how many cores Xcode expects to use, and is only read when Xcode starts up. If you set it higher than the number of cores on your machine when not using distcc, your computer will lock up. If you stop using distcc, be sure to quit Xcode and call "defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks `sysctl -n hw.ncpu`"

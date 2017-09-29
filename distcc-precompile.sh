@@ -2,10 +2,6 @@
 
 set -e
 
-cat ~/.bash_profile > ~/distcc/tinyco/profile-copy
-chmod +x ~/distcc/tinyco/profile-copy
-. ~/distcc/tinyco/profile-copy
-
 if [ "$DISTCC_ENABLED" != true ]
 then
 	echo "distcc not enabled"
@@ -19,15 +15,13 @@ git merge origin/master
 REQUIRED_VERSION=$(cat cli-version | grep Xcode)
 CURRENT_VERSION=$(xcodebuild -version | grep Xcode)
 
-cp ~/.bash_profile ~/.bash_profile.bak
-
 if [ "$REQUIRED_VERSION" != "$CURRENT_VERSION" ]
 then
-	cat profile-copy | sed 's/DISTCC_CURRENT_BUILD_ENABLED=.*/DISTCC_CURRENT_BUILD_ENABLED=false/' | tee profile-copy > /dev/null
+	cat profile | sed 's/DISTCC_CURRENT_BUILD_ENABLED=.*/DISTCC_CURRENT_BUILD_ENABLED=false/' | tee profile > /dev/null
 	echo "Current version $CURRENT_VERSION is not the required version $REQUIRED_VERSION"
 	exit
 else
-	cat profile-copy | sed 's/DISTCC_CURRENT_BUILD_ENABLED=.*/DISTCC_CURRENT_BUILD_ENABLED=true/' | tee profile-copy > /dev/null
+	cat profile | sed 's/DISTCC_CURRENT_BUILD_ENABLED=.*/DISTCC_CURRENT_BUILD_ENABLED=true/' | tee profile > /dev/null
 fi
 
 DISTCCD_PROCESSES=$(ps -A | grep "/usr/local/Cellar/distcc/3.2rc1/bin/distccd" | grep -v "grep") || true
@@ -46,7 +40,7 @@ while read line || [[ -n "$line" ]]
 do
 	if [ "$line" != "" ]
 	then
-		arp -na | grep "$line" | sed 's/.*(\(.*\)).*/\1/' >> "hosts.temp"
+		arp -na | grep "$line" | sed 's/.*(\(.*\)).*/\1\/10/' >> "hosts.temp"
 	fi
 done < "hosts"
 
