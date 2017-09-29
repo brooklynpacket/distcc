@@ -2,6 +2,8 @@
 
 set -e
 
+. ~/distcc/tinyco/profile
+
 if [ "$DISTCC_ENABLED" != true ]
 then
 	echo "distcc not enabled"
