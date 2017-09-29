@@ -2,7 +2,7 @@
 
 exec > ~/distcc/tinyco/logs/compile.log 2>&1
 
-. ~/distcc/tinyco/profile-copy
+. ~/distcc/tinyco/profile
 
 if [ "$DISTCC_ENABLED" == true ] && [ "$DISTCC_CURRENT_BUILD_ENABLED" == true ]
 then
