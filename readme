@@ -1,8 +1,8 @@
 Server setup:
 
 1. Make sure you are on a wired connection, with IP address starting with 10.0.
-2. Close Xcode
-3. Make sure you have the correct version of Xcode installed
+2. Make sure you have the correct version of Xcode installed (check cli-version for the required version)
+3. Close Xcode
 4. Run "pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version:"
 	- If you do not have that package, run xcode-select --install
 	- If the version you get from pkgutil is lower than the necessary version (see cli-version), run softwareupdate to update to the correct version of CLI

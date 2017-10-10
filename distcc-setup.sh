@@ -40,7 +40,6 @@ setup()
 
 	echo "#!/bin/sh" >> tinyco/profile
 	echo "export DISTCC_ENABLED=true" >> tinyco/profile
-	echo "export DISTCC_CURRENT_BUILD_ENABLED=true" >> tinyco/profile
 }
 
 usage()
