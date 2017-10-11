@@ -22,7 +22,7 @@ Project setup (after server setup):
 4. Under Locations, change Derived Data to a Custom location with address '/Library/Developer/Xcode/DerivedData'
 5. In every project that has a significant number of C++ files (this may be many projects), add a user-defined build setting with key "CPLUSPLUS" and value "distcc"
 7. Close Xcode
-8. In the terminal, run "defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 24"
+8. In the terminal, run "defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 48"
 9. Start Xcode and compile
 
 NOTE: The maximum compile tasks setting affects how many cores Xcode expects to use, and is only read when Xcode starts up. If you set it higher than the number of cores on your machine when not using distcc, it will use all your cores and your computer will be less responsive. If you stop using distcc, you might want to call:
