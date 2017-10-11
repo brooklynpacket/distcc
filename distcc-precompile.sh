@@ -2,12 +2,18 @@
 
 set -e
 
+disable()
+{
+	echo "" > ~/.distcc/hosts
+	exit
+}
+
 . ~/distcc/tinyco/profile
 
 if [ "$DISTCC_ENABLED" != true ]
 then
 	echo "distcc not enabled"
-	exit
+	disable
 fi
 
 cd ~/distcc/tinyco
@@ -19,11 +25,8 @@ CURRENT_VERSION=$(xcodebuild -version | grep Xcode)
 
 if [ "$REQUIRED_VERSION" != "$CURRENT_VERSION" ]
 then
-	cat profile | sed 's/DISTCC_CURRENT_BUILD_ENABLED=.*/DISTCC_CURRENT_BUILD_ENABLED=false/' | tee profile > /dev/null
 	echo "Current version $CURRENT_VERSION is not the required version $REQUIRED_VERSION"
-	exit
-else
-	cat profile | sed 's/DISTCC_CURRENT_BUILD_ENABLED=.*/DISTCC_CURRENT_BUILD_ENABLED=true/' | tee profile > /dev/null
+	disable
 fi
 
 DISTCCD_PROCESSES=$(ps -A | grep "/usr/local/Cellar/distcc/3.2rc1/bin/distccd" | grep -v "grep") || true
@@ -42,8 +45,20 @@ while read line || [[ -n "$line" ]]
 do
 	if [ "$line" != "" ]
 	then
-		arp -na | grep "$line" | sed 's/.*(\(.*\)).*/\1\/10/' >> "hosts.temp"
+		LOCAL_MAC=$(ifconfig -a | grep "$line") || true
+		if [ "$LOCAL_MAC" == "" ]
+		then
+			arp -na | grep "$line" | sed 's/.*(\(.*\)).*/\1,lzo,cpp/' >> "hosts.temp"
+		fi
 	fi
 done < "hosts"
 
+echo "--randomize" >> "hosts.temp"
+#echo "LOCAL_HOST = localhost | --localslots_cpp=8" >> "hosts.temp"
+
 mv hosts.temp ~/.distcc/hosts
+
+#cat profile > profile.build
+#pump --startup >> profile.build
+
+echo "" > logs/compile.log

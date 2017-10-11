@@ -6,7 +6,7 @@ Server setup:
 4. Run "pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version:"
 	- If you do not have that package, run xcode-select --install
 	- If the version you get from pkgutil is lower than the necessary version (see cli-version), run softwareupdate to update to the correct version of CLI
-5. Run "distcc-setup.sh -i"
+5. Run "./distcc-setup.sh -i"
 	- If Homebrew needs to install anything, you may have to run the script twice
 	- This will clone the repos, install distcc, and start a server
 6. Run "ps -A | grep distccd"
@@ -20,10 +20,22 @@ Project setup:
 2. Under Build > Pre-actions, add a new action which calls "~/distcc/tinyco/distcc-precompile.sh > ~/distcc/tinyco/logs/precompile.log"
 3. Go to Xcode > Preferences...
 4. Under Locations, change Derived Data to a Custom location with address '/Library/Developer/Xcode/DerivedData'
-5. In every target that has a significant number of C++ files (this may be many targets), add a user-defined build setting with key "CPLUSPLUS" and value "~/distcc/tinyco/distcc-compile.sh"
-6. Run a build and look at ~/distcc/tinyc/logs/compile.log to make sure it says "Using distcc"
+5. In every project that has a significant number of C++ files (this may be many projects), add a user-defined build setting with key "CPLUSPLUS" and value "distcc"
 7. Close Xcode
 8. In the terminal, run "defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 24"
 9. Start Xcode and compile
 
-WARNING: The maximum compile tasks setting affects how many cores Xcode expects to use, and is only read when Xcode starts up. If you set it higher than the number of cores on your machine when not using distcc, your computer will lock up. If you stop using distcc, be sure to quit Xcode and call "defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks `sysctl -n hw.ncpu`"
+NOTE: The maximum compile tasks setting affects how many cores Xcode expects to use, and is only read when Xcode starts up. If you set it higher than the number of cores on your machine when not using distcc, it will use all your cores and your computer will be less responsive. If you stop using distcc, you might want to call:
+	defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks `sysctl -n hw.ncpu`
+or:
+	defaults delete com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks
+
+
+
+Test compilation:
+
+1. In the terminal, run "brew install watch"
+2. In the terminal, run "watch distccmon-text"
+3. Start a build
+
+The monitor program should show compilation tasks being farmed out to a number of IP addresses.
