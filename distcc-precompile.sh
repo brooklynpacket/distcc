@@ -48,7 +48,7 @@ do
 		LOCAL_MAC=$(ifconfig -a | grep "$line") || true
 		if [ "$LOCAL_MAC" == "" ]
 		then
-			arp -na | grep "$line" | sed 's/.*(\(.*\)).*/\1,lzo,cpp/' >> "hosts.temp"
+			arp -na | grep "$line" | sed 's/.*(\(.*\)).*/\1/' >> "hosts.temp"
 		fi
 	fi
 done < "hosts"

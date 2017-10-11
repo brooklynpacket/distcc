@@ -14,7 +14,7 @@ Server setup:
 
 
 
-Project setup:
+Project setup (after server setup):
 
 1. In Xcode, go to Product > Scheme > Edit Scheme...
 2. Under Build > Pre-actions, add a new action which calls "~/distcc/tinyco/distcc-precompile.sh > ~/distcc/tinyco/logs/precompile.log"
