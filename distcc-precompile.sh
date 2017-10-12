@@ -8,6 +8,12 @@ disable()
 	exit
 }
 
+if [ ! -e ~/distcc/tinyco/profile ]
+then
+	echo '#!/bin/sh' > ~/distcc/tinyco/profile
+	echo 'export DISTCC_ENABLED=true' >> ~/distcc/tincyo/profile
+fi
+
 . ~/distcc/tinyco/profile
 
 if [ "$DISTCC_ENABLED" != true ]
