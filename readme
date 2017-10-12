@@ -20,7 +20,7 @@ Project setup (after server setup):
 2. Under Build > Pre-actions, add a new action which calls "~/distcc/tinyco/distcc-precompile.sh > ~/distcc/tinyco/logs/precompile.log"
 3. Go to Xcode > Preferences...
 4. Under Locations, change Derived Data to a Custom location with address '/Library/Developer/Xcode/DerivedData'
-5. In every project that has a significant number of C++ files (this may be many projects), add a user-defined build setting with key "CPLUSPLUS" and value "distcc"
+5. In every project that has a significant number of C++ files (this may be many projects), add a user-defined build setting with key "CPLUSPLUS" and value "~/distcc/tinyco/distcc-compile.sh"
 7. Close Xcode
 8. In the terminal, run "defaults write com.apple.dt.Xcode IDEBuildOperationMaxNumberOfConcurrentCompileTasks 48"
 9. Start Xcode and compile
