@@ -1,5 +1,7 @@
 #!/bin/sh
 
+exec > ~/distcc/tinyco/logs/daemon.log 2>&1
+
 commit_hosts()
 {
 	git reset
@@ -55,4 +57,5 @@ fi
 #export DISTCC_SAVE_TEMPS=1
 #export TMPDIR=~/distcc/tinyco/logs/tmp
 
-/usr/local/Cellar/distcc/3.2rc1/bin/distccd --daemon --allow 127.0.0.1 --allow 10.0.0.0/16 --log-file ~/distcc/tinyco/logs/distccd.log --verbose
+echo "" > ~/distcc/tinyco/logs/distccd.log
+/usr/local/Cellar/distcc/3.2rc1/bin/distccd --daemon -j 4 --allow 127.0.0.1 --allow 10.0.0.0/16 --log-file ~/distcc/tinyco/logs/distccd.log

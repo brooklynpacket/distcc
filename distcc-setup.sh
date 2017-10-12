@@ -38,7 +38,7 @@ setup()
 	sudo touch ~/.distcc/hosts
 	sudo chmod 666 ~/.distcc/hosts
 
-	echo "#!/bin/sh" >> tinyco/profile
+	echo "#!/bin/sh" > tinyco/profile
 	echo "export DISTCC_ENABLED=true" >> tinyco/profile
 }
 
