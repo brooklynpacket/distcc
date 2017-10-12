@@ -1,10 +1,11 @@
 #!/bin/sh
 
-exec >> ~/distcc/tinyco/logs/compile.log 2>&1
+exec > ~/distcc/tinyco/logs/compile.log 2>&1
 
 if [ -e ~/distcc/tinyco/profile.build ]
 then
 	. ~/distcc/tinyco/profile.build
+	echo "loading profile.build"
 fi
 
 if [[ -n "$DISTCC_ENABLED" ]] && [ "$DISTCC_ENABLED" == true ]

@@ -2,6 +2,12 @@
 
 set -e
 
+create_profile()
+{
+	echo "#!/bin/sh" > ~/distcc/tinyco/profile
+	echo "export DISTCC_ENABLED=true" >> ~/distcc/tinyco/profile
+}
+
 setup()
 {
 	brew install python3
@@ -38,20 +44,23 @@ setup()
 	sudo touch ~/.distcc/hosts
 	sudo chmod 666 ~/.distcc/hosts
 
-	echo "#!/bin/sh" > tinyco/profile
-	echo "export DISTCC_ENABLED=true" >> tinyco/profile
+	create_profile
 }
 
 usage()
 {
 	echo "Options:\n"
 	echo "-i       Install distcc, set up a launch agent, and start build server"
+	echo "-p       Create the profile file"
 }
 
 while [ "$1" != "" ]
 do
 	case $1 in
 		-i )	setup
+				exit
+				;;
+		-p )	create_profile
 				exit
 				;;
 		-h )	usage
