@@ -58,4 +58,4 @@ fi
 #export TMPDIR=~/distcc/tinyco/logs/tmp
 
 echo "" > ~/distcc/tinyco/logs/distccd.log
-/usr/local/Cellar/distcc/3.2rc1/bin/distccd --daemon -j 4 --allow 127.0.0.1 --allow 10.0.0.0/16 --log-file ~/distcc/tinyco/logs/distccd.log
+/usr/local/Cellar/distcc/3.2rc1/bin/distccd --daemon --jobs 4 --nice 20 --allow 127.0.0.1 --allow 10.0.0.0/16 --log-file ~/distcc/tinyco/logs/distccd.log
