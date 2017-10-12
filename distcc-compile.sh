@@ -1,12 +1,15 @@
 #!/bin/sh
 
-exec > ~/distcc/tinyco/logs/compile.log 2>&1
+exec >> ~/distcc/tinyco/logs/compile.log 2>&1
 
-. ~/distcc/tinyco/profile
-
-if [ "$DISTCC_ENABLED" == true ] && [ "$DISTCC_CURRENT_BUILD_ENABLED" == true ]
+if [ -e ~/distcc/tinyco/profile.build ]
 then
-	distcc clang++ "$@"
+	. ~/distcc/tinyco/profile.build
+fi
+
+if [[ -n "$DISTCC_ENABLED" ]] && [ "$DISTCC_ENABLED" == true ]
+then
+	distcc "$@" || exit
 	echo "Using distcc"
 else
 	clang++ "$@"

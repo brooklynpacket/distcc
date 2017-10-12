@@ -58,7 +58,7 @@ echo "--randomize" >> "hosts.temp"
 
 mv hosts.temp ~/.distcc/hosts
 
-#cat profile > profile.build
+cat profile > profile.build
 #pump --startup >> profile.build
 
 echo "" > logs/compile.log
