@@ -39,3 +39,7 @@ Test compilation:
 3. Start a build
 
 The monitor program should show compilation tasks being farmed out to a number of IP addresses.
+
+
+
+User settings are found in ~/distcc/tinyco/profile
